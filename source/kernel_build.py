@@ -85,6 +85,9 @@ def gcc_build(d) :
     system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + (" sdm660_defconfig" if d == 1 else " sdm660-perf_defconfig"))
     system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + ' ' + cross + " -j4")
 
+    print("Done...")
+    print("")
+
 def clang_build(d) :
     print("Build started :")
     print("  CC=clang")
@@ -107,6 +110,29 @@ def clang_build(d) :
     system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " mrproper")
     system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + (" sdm660_defconfig" if d == 1 else " sdm660-perf_defconfig"))
     system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + cc + ' ' + triple + ' ' + arch + ' ' + subarch + ' ' + cross + " -j4")
+
+    print("Done...")
+    print("")
+
+def create_flashable(c, d) :
+    print("Creating flashable .ZIP for A slot :")
+    system("git clone https://github.com/KonstantIMP/AnyKernel3_nokia_7_1.git -b boot_a")
+    system("cp nokia_7_1_stock_kernel/output/arch/arm64/boot/Image.gz-dtb AnyKernel3_nokia_7_1")
+    system("find nokia_7_1_stock_kernel/output -name \"*.ko\" -exec cp {} AnyKernel3_nokia_7_1/modules/system/lib/modules \;")
+    system("cd AnyKernel3_nokia_7_1 && zip -r nokia_7_1_" + ("sdm660_" if d == 1 else "sdm660-per_") + ("gcc" if c == 1 else "clang") + "_a.zip *")
+    system("cp AnyKernel3_nokia_7_1/nokia_7_1_*.zip ./")
+    system("rm -rf AnyKernel3_nokia_7_1")
+
+    print("Creating flashable .ZIP for B slot :")
+    system("git clone https://github.com/KonstantIMP/AnyKernel3_nokia_7_1.git -b boot_b")
+    system("cp nokia_7_1_stock_kernel/output/arch/arm64/boot/Image.gz-dtb AnyKernel3_nokia_7_1")
+    system("find nokia_7_1_stock_kernel/output -name \"*.ko\" -exec cp {} AnyKernel3_nokia_7_1/modules/system/lib/modules \;")
+    system("cd AnyKernel3_nokia_7_1 && zip -r nokia_7_1_" + ("sdm660_" if d == 1 else "sdm660-per_") + ("gcc" if c == 1 else "clang") + "_b.zip *")
+    system("cp AnyKernel3_nokia_7_1/nokia_7_1_*.zip ./")
+    system("rm -rf AnyKernel3_nokia_7_1")
+    
+    print("Done...")
+    print("")
 
 if __name__ == "__main__" :
     print_hello()
@@ -134,4 +160,4 @@ if __name__ == "__main__" :
 
         clang_build(defconfig)
 
-    #clone_kernel_source()
+    create_flashable(compiler, defconfig)

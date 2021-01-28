@@ -131,3 +131,6 @@ dmypy.json
 *kernel/
 *android-4.9/
 clang/
+AnyKernel*/
+
+*.zip
