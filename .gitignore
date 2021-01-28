@@ -128,4 +128,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-kernel/
+*kernel/
+*android-4.9/
