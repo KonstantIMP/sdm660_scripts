@@ -32,6 +32,22 @@ def compiler_choose() :
             print("")
             return compiler
 
+def defconfig_choose() :
+    print("Choose kernel config :")
+    print("  1. SDM660 defconfig")
+    print("  2. SDM660-perfomance defconfig")
+    while True :
+        try :
+            compiler = int(input("Make your choose : "))
+        except Exception :
+            print("Incorrect input! Try again!")
+        else :
+            if compiler != 1 and compiler != 2 : 
+                print("Incorrect input! Try again!")
+                continue
+            print("")
+            return compiler
+
 def clone_kernel_source() :
     print("Cloning kernel source...")
     system("git clone https://gitlab.com/KonstantIMP/nokia_7_1_stock_kernel.git")
@@ -55,7 +71,10 @@ if __name__ == "__main__" :
     
     os_check()
 
-    if compiler_choose() == 1 :
+    compiler = compiler_choose()
+    defconfig = defconfig_choose()
+
+    if compiler == 1 :
         print("Compiling by GCC")
         print("")
     else :
