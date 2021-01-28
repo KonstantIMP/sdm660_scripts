@@ -64,7 +64,7 @@ def clone_gcc_compiler() :
 
 def clone_clang_compiler() :
     print("Cloning Clang compiler (prebuilt by Google):")
-    system("git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86")
+    system("git clone https://github.com/RaghuVarma331/clang.git -b android-11.0 --depth=1 clang")
     print("Done...")
     print("")
 
@@ -84,6 +84,29 @@ def gcc_build(d) :
     system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " mrproper")
     system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + (" sdm660_defconfig" if d == 1 else " sdm660-perf_defconfig"))
     system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + ' ' + cross + " -j4")
+
+def clang_build(d) :
+    print("Build started :")
+    print("  CC=clang")
+    print("  ARCH=arm64")
+    print("  SUBARCH=arm64")
+    print("  CLANG_TRIPLE=" + __file__[0:-22] + "clang/bin/aarch64-linux-gnu-")
+    print("  CROSS_COMPILE=" + __file__[0:-22] + "aarch64-linux-android-4.9/bin/aarch64-linux-android-")
+    print("  O=output")
+
+    cc = "CC=clang"
+    arch = "ARCH=arm64"
+    subarch = "SUBARCH=arm64"
+    cross = "CROSS_COMPILE=aarch64-linux-android-"
+    triple = "CLANG_TRIPLE=aarch64-linux-gnu-"
+    out = "O=output"
+
+    path_ex = "export PATH=" + __file__[0:-22] + "clang/bin:" + __file__[0:-22] + "aarch64-linux-android-4.9/bin:${PATH} && "
+
+    system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " clean")
+    system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " mrproper")
+    system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + (" sdm660_defconfig" if d == 1 else " sdm660-perf_defconfig"))
+    system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + cc + ' ' + triple + ' ' + arch + ' ' + subarch + ' ' + cross + " -j4")
 
 if __name__ == "__main__" :
     print_hello()
@@ -107,5 +130,8 @@ if __name__ == "__main__" :
         print("")
 
         clone_clang_compiler()
+        clone_gcc_compiler() #Haha, but it`s true
+
+        clang_build(defconfig)
 
     #clone_kernel_source()
