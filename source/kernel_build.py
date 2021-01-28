@@ -38,6 +38,18 @@ def clone_kernel_source() :
     print("Done...")
     print("")
 
+def clone_gcc_compiler() :
+    print("Cloning GCC compiler (prebuilt by Google):")
+    system("git clone https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9")
+    print("Done...")
+    print("")
+
+def get_clang_compiler() :
+    print("Cloning Clang compiler (prebuilt by Google):")
+    system("git clone https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86")
+    print("Done...")
+    print("")
+
 if __name__ == "__main__" :
     print_hello()
     
