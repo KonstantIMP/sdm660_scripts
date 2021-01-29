@@ -119,7 +119,7 @@ def create_flashable(c, d) :
     system("git clone https://github.com/KonstantIMP/AnyKernel3_nokia_7_1.git -b boot_a")
     system("cp nokia_7_1_stock_kernel/output/arch/arm64/boot/Image.gz-dtb AnyKernel3_nokia_7_1")
     system("find nokia_7_1_stock_kernel/output -name \"*.ko\" -exec cp {} AnyKernel3_nokia_7_1/modules/system/lib/modules \;")
-    system("cd AnyKernel3_nokia_7_1 && zip -r nokia_7_1_" + ("sdm660_" if d == 1 else "sdm660-per_") + ("gcc" if c == 1 else "clang") + "_a.zip *")
+    system("cd AnyKernel3_nokia_7_1 && zip -r nokia_7_1_" + ("sdm660_" if d == 1 else "sdm660-perf_") + ("gcc" if c == 1 else "clang") + "_a.zip *")
     system("cp AnyKernel3_nokia_7_1/nokia_7_1_*.zip ./")
     system("rm -rf AnyKernel3_nokia_7_1")
 
@@ -127,11 +127,22 @@ def create_flashable(c, d) :
     system("git clone https://github.com/KonstantIMP/AnyKernel3_nokia_7_1.git -b boot_b")
     system("cp nokia_7_1_stock_kernel/output/arch/arm64/boot/Image.gz-dtb AnyKernel3_nokia_7_1")
     system("find nokia_7_1_stock_kernel/output -name \"*.ko\" -exec cp {} AnyKernel3_nokia_7_1/modules/system/lib/modules \;")
-    system("cd AnyKernel3_nokia_7_1 && zip -r nokia_7_1_" + ("sdm660_" if d == 1 else "sdm660-per_") + ("gcc" if c == 1 else "clang") + "_b.zip *")
+    system("cd AnyKernel3_nokia_7_1 && zip -r nokia_7_1_" + ("sdm660_" if d == 1 else "sdm660-perf_") + ("gcc" if c == 1 else "clang") + "_b.zip *")
     system("cp AnyKernel3_nokia_7_1/nokia_7_1_*.zip ./")
     system("rm -rf AnyKernel3_nokia_7_1")
     
     print("Done...")
+    print("")
+
+def print_bye() :
+    print("== == == == == == == == == == == == == == == == == ==")
+    print("== Thank you for script using!                     ==")
+    print("== You can make some usefull changes for it        ==")
+    print("== And upload it to GitHub (by Pull Request)       ==")
+    print("==                                                 ==")
+    print("== Or you can buy me a coffee :-D                  ==")
+    print("== Here : https://sobe.ru/na/coffee_and_learning   ==")
+    print("== == == == == == == == == == == == == == == == == ==")
     print("")
 
 if __name__ == "__main__" :
@@ -161,3 +172,5 @@ if __name__ == "__main__" :
         clang_build(defconfig)
 
     create_flashable(compiler, defconfig)
+
+    print_bye()
