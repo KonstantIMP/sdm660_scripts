@@ -178,6 +178,15 @@ def system_change(name) :
         print('Done!')
         print('')
 
+    answer = choose_option('Fix play protect(doesn\'t work with adb fix)', ['Yes', 'No'])
+    if answer == 1 :
+        print('Working...')
+        system('sudo mkdir -p ' + name + '_working/m_system/system/phh/')
+        system('sudo touch ' + name + '_working/m_system/system/phh/secure')
+        system('sudo chmod 644 ' + name + '_working/m_system/system/phh/secure')
+        print('Done!')
+        print('')
+
 if __name__ == '__main__' :
     #print_hello()
 
