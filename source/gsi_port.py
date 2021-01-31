@@ -135,6 +135,16 @@ def vendor_change(name) :
         print('== == == == == == == == == == == == == == == ==')
         print('')
 
+def system_change(name) :
+    print('Start working with system :')
+
+    answer = choose_option('Add Magisk support (Android 11 only)', ['Yes', 'No'])
+    if answer == 1 :
+        print('Applying fix...')
+        system('echo \"\nexport PATH /sbin:/product/bin:/apex/com.android.runtime/bin:/apex/com.android.art/bin:/system_ext/bin:/system/bin:/system/xbin:/odm/bin:/vendor/bin:/vendor/xbin\" >> ' + name + '_working/m_system/init.environ.rc')
+        print('Done...')
+
+    
 
 if __name__ == '__main__' :
     #print_hello()
