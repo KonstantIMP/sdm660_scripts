@@ -187,21 +187,37 @@ def system_change(name) :
         print('Done!')
         print('')
 
+    answer = choose_option('Change name to Nokia 7.1', ['Yes', 'No'])
+    if answer == 1 :
+        print('Changing build.prop')
+        build_prop_path = name + '_working/m_system/sustem/build.prop'
+
+        system('sudo sed -i \'s/ro.system.build.fingerprint=.*./ro.system.build.fingerprint=Nokia\\/Crystal_00WW\\/CTL_sprout:10\\/QKQ1.190828.002\\/00WW_4_15I:user\\/release-keys/g\'' + build_prop_path)
+        system('sudo sed -i \'s/ro.product.system.brand=.*./ro.product.system.brand=Unknown/g\'' + build_prop_path)
+        system('sudo sed -i \'s/ro.product.system.manufacturer=.*./ro.product.system.manufacturer=Unknown/g\'' + build_prop_path)
+        system('sudo sed -i \'s/ro.product.system.model=.*./ro.product.system.model=Nokia 7.1/g\'' + build_prop_path)
+        system('sudo sed -i \'s/ro.product.system.name=.*./ro.product.system.name=B2N_00WW_FIH/g\'' + build_prop_path)
+        system('sudo sed -i \'s/ro.product.system.device=.*./ro.product.system.device=B2N/g\'' + build_prop_path)
+        
+        print('Done!!!')
+        print('')
+
 if __name__ == '__main__' :
-    #print_hello()
+    print_hello()
+    
+    os_check()
 
-    #os_check()
-
-    #gsi_path = get_gsi_path()
+    gsi_path = get_gsi_path()
     rom_name = get_rom_name()
 
-    #create_rom_dir(rom_name)
+    create_rom_dir(rom_name)
 
-    #get_system(gsi_path, rom_name)
-    #get_vendor(rom_name)
-    #get_boot(rom_name)
+    get_system(gsi_path, rom_name)
+    get_vendor(rom_name)
+    get_boot(rom_name)
 
-    #mount_system(rom_name)
-    #mount_vendor(rom_name)
+    mount_system(rom_name)
+    mount_vendor(rom_name)
 
     vendor_change(rom_name)
+    system_change(rom_name)
