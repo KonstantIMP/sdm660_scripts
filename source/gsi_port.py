@@ -144,7 +144,39 @@ def system_change(name) :
         system('echo \"\nexport PATH /sbin:/product/bin:/apex/com.android.runtime/bin:/apex/com.android.art/bin:/system_ext/bin:/system/bin:/system/xbin:/odm/bin:/vendor/bin:/vendor/xbin\" >> ' + name + '_working/m_system/init.environ.rc')
         print('Done...')
 
-    
+    answer = choose_option('Try to fix ADB bug (Adnroid 10 mostly)', ['Yes', 'No'])
+    if answer == 1 :
+        print('Applying fix (Mau be cause of bootloop :-D)...')
+        
+        print('Getting verified keys...')
+        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/patch/adb_keys?inline=false -O ' + name + '_working/adb_keys')
+        system('sudo mkdir -p ' + name + '_working/m_system/data/misc/adb')
+        system('sudo cp ' + name + '_working/adb_keys ' + name + '_working/m_system/data/misc/adb/')
+        
+        print('Changib prop.default')
+        prop_default_path = name + '_working/m_system/sustem/etc/prop.default'
+
+        system('sudo echo \"ro.adb.secure=0\" >> ' + prop_default_path)
+        system('sudo echo \"ro.secure=0\" >> ' + prop_default_path)
+        system('sudo echo \"ro.debuggable=1\" >> ' + prop_default_path)
+        system('sudo echo \"persist.sys.usb.config=mtp,adb\" >> ' + prop_default_path)
+        system('sudo echo \"persist.service.adb.enable=1\" >> ' + prop_default_path)
+        system('sudo echo \"persist.service.debuggable=1\" >> ' + prop_default_path)
+
+        system('sudo sed -i \'s/ro.adb.secure=.*./ro.adb.secure=0/g\' ' + prop_default_path)
+        system('sudo sed -i \'s/ro.secure=.*./ro.secure=0/g\' ' + prop_default_path)
+        system('sudo sed -i \'s/ro.debuggable=.*./ro.debuggable=1/g\' ' + prop_default_path)
+        system('sudo sed -i \'s/persist.sys.usb.config=.*./persist.sys.usb.config=mtp,adb/g\' ' + prop_default_path)
+        system('sudo sed -i \'s/persist.service.adb.enable=.*./persist.service.adb.enable=1/g\' ' + prop_default_path)
+        system('sudo sed -i \'s/persist.service.debuggable=.*./persist.service.debuggable=1/g\' ' + prop_default_path)
+        system('sudo sed -i \'s/ro.adb.secure 1/ro.adb.secure 0/g\' ' + prop_default_path)
+        system('sudo sed -i \'s/ro.secure 1/ro.secure 0/g\' ' + prop_default_path)
+        system('sudo sed -i \'s/ro.debuggable 0/ro.debuggable 1/g\' ' + prop_default_path)
+        system('sudo sed -i \'s/persist.service.adb.enable 0/persist.service.adb.enable 1/g\' ' + prop_default_path)
+        system('sudo sed -i \'s/persist.service.debuggable 0/persist.service.debuggable 1/g\' ' + prop_default_path)
+
+        print('Done!')
+        print('')
 
 if __name__ == '__main__' :
     #print_hello()
