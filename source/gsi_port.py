@@ -68,17 +68,17 @@ def get_vendor(name) :
     answer = choose_option('Choose vendor version', ['Stock Android 10 vendor', 'Stock Android 10 vendor modified by RaghuVarma', 'Community Vendor 11'])
 
     if answer == 1 :
-        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/vendor/vendor_stock.img -o ' + name + '_working/vendor.img')
+        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/vendor/vendor_stock.img -O ' + name + '_working/vendor.img')
     elif answer == 2 :
-        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/vendor/vendor_stock_by_RaghuVarma.img -o ' + name + '_working/vendor.img')
+        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/vendor/vendor_stock_by_RaghuVarma.img -O ' + name + '_working/vendor.img')
     else :
-        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/vendor/vendor_community.img -o ' + name + '_working/vendor.img')
+        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/vendor/vendor_community.img -O ' + name + '_working/vendor.img')
 
     print('')
 
 def get_boot(name) :
     print('Getting stock boot image...')
-    system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/boot/boot.img ' + name + '_working/boot.img')
+    system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/boot/boot.img -O ' + name + '_working/boot.img')
     print('Done!')
     print('')
 
@@ -95,19 +95,39 @@ def mount_vendor(name) :
     print('Done!')
     print('')
 
+def vendor_change(name) :
+    print('Start working with vendor :')
+    
+    answer = choose_option('Include Bluetooth Headset fix(Android 10 mostly)', ['Yes', 'No'])
+    if answer == 1 :
+        print('Getting fixed audio policy :')
+        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/patch/audio_policy_configuration.xml?inline=false -O ' + name + '_working/audio_policy_configuration.xml')
+
+        print('Fixing process...')
+        system('sudo rm' + name + '_working/m_vendor/etc/audio_policy_configuration.xml')
+        system('sudo rm' + name + '_working/m_vendor/etc/audio/audio_policy_configuration.xml')
+        system('sudo cp ' + name + '_working/audio_policy_configuration.xml ' + name + '_working/m_vendor/etc/audio_policy_configuration.xml')
+        system('sudo cp ' + name + '_working/audio_policy_configuration.xml ' + name + '_working/m_vendor/etc/audio/audio_policy_configuration.xml')
+        system('sudo chmod 644 ' + name + '_working/m_vendor/etc/audio_policy_configuration.xml')
+        system('sudo chmod 644 ' + name + '_working/m_vendor/etc/audio/audio_policy_configuration.xml')
+
+        print('Done!')
+
 if __name__ == '__main__' :
-    print_hello()
+    #print_hello()
 
-    os_check()
+    #os_check()
 
-    gsi_path = get_gsi_path()
+    #gsi_path = get_gsi_path()
     rom_name = get_rom_name()
 
-    create_rom_dir(rom_name)
+    #create_rom_dir(rom_name)
 
-    get_system(gsi_path, rom_name)
-    get_vendor(rom_name)
-    get_boot(rom_name)
+    #get_system(gsi_path, rom_name)
+    #get_vendor(rom_name)
+    #get_boot(rom_name)
 
-    mount_system(rom_name)
-    mount_vendor(rom_name)
+    #mount_system(rom_name)
+    #mount_vendor(rom_name)
+
+    vendor_change(rom_name)
