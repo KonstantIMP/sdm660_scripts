@@ -202,6 +202,36 @@ def system_change(name) :
         print('Done!!!')
         print('')
 
+    answer = choose_option('Include phh\'superuser app', ['Yes', 'No'])
+    if answer == 1 :
+        print('Getting apk')
+        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/app/me.phh.superuser_1033.apk -O ' + name + '_working/phh_superuser.apk')
+        system('sudo cp ' + name + '_working/phh_superuser.apk ' + name + '_working/m_system/system/app/')
+        system('sudo chmod 644 ' + name + '_working/m_system/system/app/phh_superuser.apk')
+        
+        print('Done!')
+        print('')
+
+    answer = choose_option('Include tales for power menu app', ['Yes', 'No'])
+    if answer == 1 :
+        print('Getting apk')
+        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/app/Device_Control.apk -O ' + name + '_working/device_control.apk')
+        system('sudo cp ' + name + '_working/device_control.apk ' + name + '_working/m_system/system/app/')
+        system('sudo chmod 644 ' + name + '_working/m_system/system/app/device_control.apk')
+        
+        print('Done!')
+        print('')
+
+    print('== == == == == == == == == == == == == == == ==')
+    print('          WARNING! WARNING! WARNING!')
+    print('   If you included some app to the rom you need to')
+    print('   Reboot into twrp, mount system, vendor and data')
+    print('   And enter the commands :')
+    print('   find /system/system/app -exec chcon u:object_r:system_file:s0 {} \\;')
+    print('   chcon u:object_r:system_file:s0 /system/system/app/*.apk')
+    print('== == == == == == == == == == == == == == == ==')
+    print('')
+
 if __name__ == '__main__' :
     print_hello()
     
