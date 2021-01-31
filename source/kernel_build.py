@@ -6,7 +6,7 @@ def print_hello() :
     print("== == == == == == == == == == == == == == ==")
     print("== Woof!!!                                ==")
     print("== Kernel building for Nokia 7.1 started  ==")
-    print("== Script made by : KonstantIMP           ==")
+    print("== Script was made by : KonstantIMP       ==")
     print("== Take a cup of coffee and wait...       ==")
     print("== == == == == == == == == == == == == == ==")
     print("")
