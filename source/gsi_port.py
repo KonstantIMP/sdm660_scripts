@@ -36,6 +36,8 @@ def get_rom_name() :
 def create_rom_dir(name) :
     print('Creating working directory...')
     system('mkdir ' + name + '_working')
+    system('mkdir ' + name + '_working/m_system')
+    system('mkdir ' + name + '_working/m_vendor')
     print('Creating output directory...')
     system('mkdir ' + name)
     print('Done!')
@@ -80,6 +82,19 @@ def get_boot(name) :
     print('Done!')
     print('')
 
+def mount_system(name) :
+    print('Mount system image...')
+    system('sudo simg2img ' + name + '_working/system.img ' + name + '_working/system.img.ext')
+    system('sudo mount -o rw,loop ' + name + '_working/system.img.ext ' + name + '_working/m_system')
+    print('Done!!!')
+    print('')
+
+def mount_vendor(name) :
+    print('Mount vendor image...')
+    system('sudo mount -o rw,loop ' + name + '_working/vendor.img ' + name + '_working/m_vendor')
+    print('Done!')
+    print('')
+
 if __name__ == '__main__' :
     print_hello()
 
@@ -93,3 +108,6 @@ if __name__ == '__main__' :
     get_system(gsi_path, rom_name)
     get_vendor(rom_name)
     get_boot(rom_name)
+
+    mount_system(rom_name)
+    mount_vendor(rom_name)
