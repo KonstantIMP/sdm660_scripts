@@ -30,7 +30,28 @@ def get_gsi_path() :
 
 def get_rom_name() :
     rom_name = input('Enter ROMs name (will be used for archive creating) : ')
+    print('')
     return rom_name
+
+def choose_option(choose_name, options_list) :
+    print(choose_name + ' :')
+    for i in range(len(options_list)) :
+        print('\t' + str(i + 1) + '. ' + options_list[i])
+
+    print('')
+
+    while True :
+        answer = int(input('Enter your answer : '))
+
+        if answer <= 0 or answer > len(options_list) :
+            print('  [ERROR] Incorrect number. Try again')
+            print('')
+        else :
+            print('')
+            return answer
+
+def get_vendor() :
+    answer = choose_option('Choose vendor version', ['Stock Android 10 vendor', 'Stock Android 10 vendor modified by RaghuVarma', 'Community Vendor 11'])
 
 if __name__ == '__main__' :
     print_hello()
@@ -39,3 +60,5 @@ if __name__ == '__main__' :
 
     gsi_path = get_gsi_path()
     rom_name = get_rom_name()
+
+    get_vendor()
