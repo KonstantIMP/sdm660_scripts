@@ -112,6 +112,29 @@ def vendor_change(name) :
         system('sudo chmod 644 ' + name + '_working/m_vendor/etc/audio/audio_policy_configuration.xml')
 
         print('Done!')
+        print('')
+
+    answer = choose_option('Include AOD and adaptive brightness', ['Yes', 'No'])
+    if answer == 1 :
+        print('Getting overlay .apk...')
+        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/patch/framework-res__auto_generated_rro.apk -O ' + name + '_working/framework-res__auto_generated_rro.apk')
+
+        print('Fixing process...')
+        system('sudo mkdir ' + name + '_working/m_vendor/overlay')
+        system('sudo cp ' + name + '_working/framework-res__auto_generated_rro.apk ' + name + '_working/m_vendor/overlay/')
+        print('Done!!!')
+        print('')
+        print('== == == == == == == == == == == == == == == ==')
+        print('          WARNING! WARNING! WARNING!')
+        print('   The patch was installed but wasnt applied')
+        print('   To apply it after flashing rebot to twrp')
+        print('   Mount system, vendor and data')
+        print('   And enter the command :')
+        print('   chcon u:object_r:vendor_overlay_file:s0 /system/system/vendor/overlay;chcon u:object_r:vendor_overlay_file:s0 /system/system/vendor/overlay/framework-res__auto_generated_rro.apk')
+        print('   chcon u:object_r:vendor_overlay_file:s0 /vendor/overlay;chcon u:object_r:vendor_overlay_file:s0 /vendor/overlay/framework-res__auto_generated_rro.apk')
+        print('== == == == == == == == == == == == == == == ==')
+        print('')
+
 
 if __name__ == '__main__' :
     #print_hello()
