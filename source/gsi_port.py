@@ -192,12 +192,12 @@ def system_change(name) :
         print('Changing build.prop')
         build_prop_path = name + '_working/m_system/sustem/build.prop'
 
-        system('sudo sed -i \'s/ro.system.build.fingerprint=.*./ro.system.build.fingerprint=Nokia\\/Crystal_00WW\\/CTL_sprout:10\\/QKQ1.190828.002\\/00WW_4_15I:user\\/release-keys/g\'' + build_prop_path)
-        system('sudo sed -i \'s/ro.product.system.brand=.*./ro.product.system.brand=Unknown/g\'' + build_prop_path)
-        system('sudo sed -i \'s/ro.product.system.manufacturer=.*./ro.product.system.manufacturer=Unknown/g\'' + build_prop_path)
-        system('sudo sed -i \'s/ro.product.system.model=.*./ro.product.system.model=Nokia 7.1/g\'' + build_prop_path)
-        system('sudo sed -i \'s/ro.product.system.name=.*./ro.product.system.name=B2N_00WW_FIH/g\'' + build_prop_path)
-        system('sudo sed -i \'s/ro.product.system.device=.*./ro.product.system.device=B2N/g\'' + build_prop_path)
+        system('sudo sed -i \'s/ro.system.build.fingerprint=.*./ro.system.build.fingerprint=Nokia\\/Crystal_00WW\\/CTL_sprout:10\\/QKQ1.190828.002\\/00WW_4_15I:user\\/release-keys/g\' ' + build_prop_path)
+        system('sudo sed -i \'s/ro.product.system.brand=.*./ro.product.system.brand=Unknown/g\' ' + build_prop_path)
+        system('sudo sed -i \'s/ro.product.system.manufacturer=.*./ro.product.system.manufacturer=Unknown/g\' ' + build_prop_path)
+        system('sudo sed -i \'s/ro.product.system.model=.*./ro.product.system.model=Nokia 7.1/g\' ' + build_prop_path)
+        system('sudo sed -i \'s/ro.product.system.name=.*./ro.product.system.name=B2N_00WW_FIH/g\' ' + build_prop_path)
+        system('sudo sed -i \'s/ro.product.system.device=.*./ro.product.system.device=B2N/g\' ' + build_prop_path)
         
         print('Done!!!')
         print('')
@@ -241,7 +241,7 @@ def umount_all(name) :
 
 def complete_vendor(name) :
     print('Packing and resizing vendor')
-    system('sudo e2fsck -f ' + name + '_working/vendor.img')
+    system('sudo e2fsck -fy ' + name + '_working/vendor.img')
     system('sudo resize2fs ' + name + '_working/vendor.img')
     system('sudo cp ' + name + '_working/vendor.img ' + name + '/vendor.img')
     system('sudo chmod 777 ' + name + '/vendor.img')
@@ -250,7 +250,7 @@ def complete_vendor(name) :
 
 def complete_system(name) :
     print('Packing and resizing system')
-    system('sudo e2fsck -f ' + name + '_working/system.img.ext')
+    system('sudo e2fsck -fy ' + name + '_working/system.img.ext')
     system('sudo resize2fs ' + name + '_working/system.img.ext')
     system('sudo img2simg ' + name + '_working/system.img.ext ' + name + '/system.img')
     system('sudo chmod 777 ' + name + '/system.img')
@@ -263,6 +263,17 @@ def complete_boot(name) :
     system('sudo chmod 777 ' + name + '/boot.img')
     print('Done!')
     print('')
+
+def print_bye() :
+    print("== == == == == == == == == == == == == == == == == ==")
+    print("== Thank you for script using!                     ==")
+    print("== You can make some usefull changes for it        ==")
+    print("== And upload it to GitHub (by Pull Request)       ==")
+    print("==                                                 ==")
+    print("== Or you can buy me a coffee :-D                  ==")
+    print("== Here : https://sobe.ru/na/coffee_and_learning   ==")
+    print("== == == == == == == == == == == == == == == == == ==")
+    print("")
 
 if __name__ == '__main__' :
     print_hello()
@@ -289,3 +300,5 @@ if __name__ == '__main__' :
     complete_system(rom_name)
     complete_vendor(rom_name)
     complete_boot(rom_name)
+
+    print_bye()
