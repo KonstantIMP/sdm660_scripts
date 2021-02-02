@@ -190,7 +190,7 @@ def system_change(name) :
     answer = choose_option('Change name to Nokia 7.1', ['Yes', 'No'])
     if answer == 1 :
         print('Changing build.prop')
-        build_prop_path = name + '_working/m_system/sustem/build.prop'
+        build_prop_path = name + '_working/m_system/system/build.prop'
 
         system('sudo sed -i \'s/ro.system.build.fingerprint=.*./ro.system.build.fingerprint=Nokia\\/Crystal_00WW\\/CTL_sprout:10\\/QKQ1.190828.002\\/00WW_4_15I:user\\/release-keys/g\' ' + build_prop_path)
         system('sudo sed -i \'s/ro.product.system.brand=.*./ro.product.system.brand=Unknown/g\' ' + build_prop_path)
@@ -227,8 +227,8 @@ def system_change(name) :
     print('   If you included some app to the rom you need to')
     print('   Reboot into twrp, mount system, vendor and data')
     print('   And enter the commands :')
-    print('   find /system/system/app -exec chcon u:object_r:system_file:s0 {} \\;')
-    print('   chcon u:object_r:system_file:s0 /system/system/app/*.apk')
+    print('   find /system/app -exec chcon u:object_r:system_file:s0 {} \\;')
+    print('   chcon u:object_r:system_file:s0 /system/app/*.apk')
     print('== == == == == == == == == == == == == == == ==')
     print('')
 
