@@ -87,8 +87,6 @@ def gcc_build(d) :
     if d == 1 : system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm660_defconfig")
     elif d == 2 : system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm660-perf_defconfig")
     else : system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm636-perf_defconfig")
-    
-    system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " prepare")
 
     system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + ' ' + cross + " -j4")
     system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + ' ' + cross + " modules")
@@ -120,8 +118,6 @@ def clang_build(d) :
     if d == 1 : system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm660_defconfig")
     elif d == 2 : system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm660-perf_defconfig")
     else : system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm636-perf_defconfig")
-
-    system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " prepare")
 
     system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + cc + ' ' + triple + ' ' + arch + ' ' + subarch + ' ' + cross + " -j4")
     system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + cc + ' ' + triple + ' ' + arch + ' ' + subarch + ' ' + cross + " modules")
