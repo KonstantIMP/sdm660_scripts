@@ -37,24 +37,25 @@ def defconfig_choose() :
     print("Choose kernel config :")
     print("  1. SDM660 defconfig")
     print("  2. SDM660-perfomance defconfig")
+    print("  3. SDM636-perfomance defconfig")
     while True :
         try :
             compiler = int(input("Make your choose : "))
         except Exception :
             print("Incorrect input! Try again!")
         else :
-            if compiler != 1 and compiler != 2 : 
+            if compiler != 1 and compiler != 2 and compiler != 3 : 
                 print("Incorrect input! Try again!")
                 continue
             print("")
             return compiler
 
 def clone_kernel_source() :
-    print("Cloning kernel source...")
-    system("git clone https://gitlab.com/KonstantIMP/nokia_7_1_stock_kernel.git")
-    system("cd nokia_7_1_stock_kernel")
-    print("Done...")
-    print("")
+    print('Cloning kernel source...')
+    system('git clone https://gitlab.com/KonstantIMP/nokia_7_1_stock_kernel.git -b dev')
+    system('cd nokia_7_1_stock_kernel')
+    print('Done...')
+    print('')
 
 def clone_gcc_compiler() :
     print("Cloning GCC compiler (prebuilt by Google):")
@@ -82,8 +83,15 @@ def gcc_build(d) :
 
     system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " clean")
     system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " mrproper")
-    system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + (" sdm660_defconfig" if d == 1 else " sdm660-perf_defconfig"))
+
+    if d == 1 : system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm660_defconfig")
+    elif d == 2 : system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm660-perf_defconfig")
+    else : system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm636-perf_defconfig")
+    
+    system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " prepare")
+
     system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + ' ' + cross + " -j4")
+    system("cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + ' ' + cross + " modules")
 
     print("Done...")
     print("")
@@ -108,8 +116,15 @@ def clang_build(d) :
 
     system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " clean")
     system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " mrproper")
-    system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + (" sdm660_defconfig" if d == 1 else " sdm660-perf_defconfig"))
+    
+    if d == 1 : system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm660_defconfig")
+    elif d == 2 : system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm660-perf_defconfig")
+    else : system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " sdm636-perf_defconfig")
+
+    system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + arch + ' ' + subarch + " prepare")
+
     system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + cc + ' ' + triple + ' ' + arch + ' ' + subarch + ' ' + cross + " -j4")
+    system(path_ex + "cd nokia_7_1_stock_kernel && sudo make " + out + ' ' + cc + ' ' + triple + ' ' + arch + ' ' + subarch + ' ' + cross + " modules")
 
     print("Done...")
     print("")
