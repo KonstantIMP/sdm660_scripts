@@ -52,7 +52,7 @@ def defconfig_choose() :
 
 def clone_kernel_source() :
     print('Cloning kernel source...')
-    system('git clone https://gitlab.com/KonstantIMP/nokia_7_1_stock_kernel.git -b dev')
+    system('git clone https://gitlab.com/KonstantIMP/nokia_7_1_stock_kernel.git')
     system('cd nokia_7_1_stock_kernel')
     print('Done...')
     print('')
