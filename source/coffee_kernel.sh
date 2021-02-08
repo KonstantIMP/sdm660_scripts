@@ -23,7 +23,12 @@ get_kernel_source() {
         cd ..
     else
         echo "Kernel folder doesn't exist. Cloning..."
-        git clone https://gitlab.com/KonstantIMP/nokia_7_1_stock_kernel.git -b coffee_kernel_cappuccino
+        if [ $1 == "KonstantIMP" ]; then
+            echo "Good morning, I"
+            git clone git@gitlab.com:KonstantIMP/nokia_7_1_stock_kernel.git -b coffee_kernel_cappuccino
+        else
+            git clone https://gitlab.com/KonstantIMP/nokia_7_1_stock_kernel.git -b coffee_kernel_cappuccino
+        fi
     fi
     echo "Done!"
     echo ""
@@ -44,6 +49,16 @@ get_gcc_toolchain() {
     echo ""
 }
 
+set_gcc_var() {
+    OUT="O=out"
+    ARCH="ARCH=arm64"
+    SUBARCH="SUBARCH=arm64"
+    CROSS_COMPILE="$(pwd)/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+}
+
 print_hello;
-get_kernel_source;
+
+get_kernel_source $1;
 get_gcc_toolchain;
+
+set_gcc_var;
