@@ -53,12 +53,49 @@ set_gcc_var() {
     OUT="O=out"
     ARCH="ARCH=arm64"
     SUBARCH="SUBARCH=arm64"
-    CROSS_COMPILE="$(pwd)/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+    CROSS_COMPILE="CROSS_COMPILE=$(pwd)/aarch64-linux-android-4.9/bin/aarch64-linux-android-"
+}
+
+build_gcc() {
+    cd nokia_7_1_stock_kernel
+
+    sudo make "$OUT" "$ARCH" "$SUBARCH" "$CROSS_COMPILE" clean
+    sudo make "$OUT" "$ARCH" "$SUBARCH" "$CROSS_COMPILE" mrproper
+    sudo make "$OUT" "$ARCH" "$SUBARCH" "$CROSS_COMPILE" coffee-cappuccino_defconfig
+    sudo make "$OUT" "$ARCH" "$SUBARCH" "$CROSS_COMPILE" "-j$(nproc --all)"
+
+    cd ..
+}
+
+create_flashable() {
+    git clone https://github.com/KonstantIMP/AnyKernel3_nokia_7_1.git -b boot_a
+    cp nokia_7_1_stock_kernel/out/arch/arm64/boot/Image.gz-dtb AnyKernel3_nokia_7_1
+    find nokia_7_1_stock_kernel/out -name "*.ko" -exec cp {} AnyKernel3_nokia_7_1/modules/system/lib/modules \;
+    cd AnyKernel3_nokia_7_1 && zip -r "nokia_7_1_cappucino_$(date +"%d_%m_%H_%M")_a.zip" *
+    cp *.zip ../ && cd ..
+    rm -rf AnyKernel3_nokia_7_1
 }
 
 print_hello;
 
-get_kernel_source $1;
-get_gcc_toolchain;
+PS3="Choose compiler : "
 
-set_gcc_var;
+select compiler in "1. GCC (prebuilt by Google)" "2. Proton Clang"
+do
+    #get_kernel_source $1;
+
+    case "$compiler" in
+        "1. GCC (prebuilt by Google)" )
+            get_gcc_toolchain;
+            set_gcc_var;
+
+            build_gcc;
+        ;;
+        "2. Proton Clang" )
+        echo "Build by clang"
+        ;;
+    esac
+break
+done
+
+create_flashable;
