@@ -199,6 +199,20 @@ def system_change(name) :
         system('sudo sed -i \'s/ro.product.system.name=.*./ro.product.system.name=B2N_00WW_FIH/g\' ' + build_prop_path)
         system('sudo sed -i \'s/ro.product.system.device=.*./ro.product.system.device=B2N/g\' ' + build_prop_path)
         
+        answer = choose_option('Change every device name(It may be a cause for PlayProtect problems)', ['Yes', 'No'])
+        if answer == 1 :
+            system('echo \"ro.system.brand=Unknown\" >> ' + build_prop_path)
+            system('echo \"ro.system.manufacturer=Unknown\" >> ' + build_prop_path)
+            system('echo \"ro.system.model=Nokia 7.1\" >> ' + build_prop_path)
+            system('echo \"ro.system.name=B2N_00WW_FIH\" >> ' + build_prop_path)
+            system('echo \"ro.system.device=B2N\" >> ' + build_prop_path)
+
+            system('sudo sed -i \'s/ro.system.brand=.*./ro.system.brand=Unknown/g\' ' + build_prop_path)
+            system('sudo sed -i \'s/ro.system.manufacturer=.*./ro.system.manufacturer=Unknown/g\' ' + build_prop_path)
+            system('sudo sed -i \'s/ro.system.model=.*./ro.system.model=Nokia 7.1/g\' ' + build_prop_path)
+            system('sudo sed -i \'s/ro.system.name=.*./ro.system.name=B2N_00WW_FIH/g\' ' + build_prop_path)
+            system('sudo sed -i \'s/ro.system.device=.*./ro.system.device=B2N/g\' ' + build_prop_path)
+
         print('Done!!!')
         print('')
 
