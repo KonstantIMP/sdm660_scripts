@@ -122,6 +122,8 @@ def vendor_change(name) :
         print('Fixing process...')
         system('sudo mkdir ' + name + '_working/m_vendor/overlay')
         system('sudo cp ' + name + '_working/framework-res__auto_generated_rro.apk ' + name + '_working/m_vendor/overlay/')
+        system('sudo chcon u:object_r:vendor_overlay_file:s0 ' + name + '_working/m_vendor/overlay/framework-res__auto_generated_rro.apk')
+        system('sudo chcon u:object_r:vendor_overlay_file:s0 ' + name + '_working/m_vendor/overlay')
         print('Done!!!')
         print('')
         print('== == == == == == == == == == == == == == == ==')
@@ -144,6 +146,24 @@ def system_change(name) :
         system('echo \"\nexport PATH /sbin:/product/bin:/apex/com.android.runtime/bin:/apex/com.android.art/bin:/system_ext/bin:/system/bin:/system/xbin:/odm/bin:/vendor/bin:/vendor/xbin\" >> ' + name + '_working/m_system/init.environ.rc')
         print('Done...')
 
+    answer = choose_option('Fix persist mount (may fix sensors)', ['Yes', 'No'])
+    if answer == 1 :
+        print('Applying fix...')
+        system('rm -r ' + name + '_working/m_system/persist')
+        system('ln -s /mnt/vendor/persist ' + name + '_working/m_system/persist')
+        print('Done...')
+
+    answer = choose_option('Add stock overlays(Fix brightness value and corners)', ['Yes', 'No'])
+    if answer == 1 :
+        print('Applying fix...')
+        
+        system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/patch/treble-overlay-nokia-ctl-7-1.apk?inline=false -O ' + name + '_working/treble-overlay-nokia-ctl-7-1.apk')
+        system('sudo mkdir ' + name + '_working/m_system/system/overlay/')
+        system('sudo cp ' + name + '_working/treble-overlay-nokia-ctl-7-1.apk ' + name + '_working/m_system/system/overlay/')
+        system('sudo chmod 644 ' + name + '_working/m_system/system/overlay/treble-overlay-nokia-ctl-7-1.apk')
+        
+        print('Done...')
+
     answer = choose_option('Try to fix ADB bug (Adnroid 10 mostly)', ['Yes', 'No'])
     if answer == 1 :
         print('Applying fix (Mau be cause of bootloop :-D)...')
@@ -154,7 +174,7 @@ def system_change(name) :
         system('sudo cp ' + name + '_working/adb_keys ' + name + '_working/m_system/data/misc/adb/')
         
         print('Changib prop.default')
-        prop_default_path = name + '_working/m_system/sustem/etc/prop.default'
+        prop_default_path = name + '_working/m_system/system/etc/prop.default'
 
         system('sudo echo \"ro.adb.secure=0\" >> ' + prop_default_path)
         system('sudo echo \"ro.secure=0\" >> ' + prop_default_path)
@@ -222,7 +242,8 @@ def system_change(name) :
         system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/app/me.phh.superuser_1033.apk -O ' + name + '_working/phh_superuser.apk')
         system('sudo cp ' + name + '_working/phh_superuser.apk ' + name + '_working/m_system/system/app/')
         system('sudo chmod 644 ' + name + '_working/m_system/system/app/phh_superuser.apk')
-        
+        system('sudo  chcon u:object_r:system_file:s0 ' + name + '_working/m_system/system/app/phh_superuser.apk')
+
         print('Done!')
         print('')
 
@@ -232,7 +253,8 @@ def system_change(name) :
         system('wget https://gitlab.com/KonstantIMP/gsi_port_resource/-/raw/master/app/Device_Control.apk -O ' + name + '_working/device_control.apk')
         system('sudo cp ' + name + '_working/device_control.apk ' + name + '_working/m_system/system/app/')
         system('sudo chmod 644 ' + name + '_working/m_system/system/app/device_control.apk')
-        
+        system('sudo  chcon u:object_r:system_file:s0 ' + name + '_working/m_system/system/app/device_control.apk')
+
         print('Done!')
         print('')
 
